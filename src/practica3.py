@@ -17,9 +17,9 @@ def valida_nodo_en_grafo(grafo_lista, nodo):
     '''
     
 def encuentra_vecinos(grafo, vertice):
-    _, E = grafo
+    _, aristas = grafo
     vecinos = set()
-    for (v1, v2) in E:
+    for (v1, v2) in aristas:
         if v1 == vertice:
             vecinos.add(v2)
         if v2 == vertice:
@@ -32,8 +32,6 @@ def encuentra_vecinos(grafo, vertice):
 
 def vertices_en_camino(camino):
     return set(camino)
-
-EXTRAINFO_ENCUENTRA_CAMINO_ABIERTO = True
 
 def encuentra_camino(grafo_lista, nodo_ini, nodo_fin):
     '''
@@ -49,17 +47,16 @@ def encuentra_camino(grafo_lista, nodo_ini, nodo_fin):
 
     vecinos = encuentra_vecinos(grafo_lista, nodo_ini)
     caminos = [nodo_ini]
-    caminos_ant = []
-    while vertices_en_camino(caminos) != vertices_en_camino(caminos_ant):
-        #if EXTRAINFO_ENCUENTRA_CAMINO_ABIERTO: print(caminos)
-        caminos_ant = caminos
+    caminos_anteriores = []
+    while vertices_en_camino(caminos) != vertices_en_camino(caminos_anteriores):
+        caminos_anteriores = caminos
         caminos = []
 
-        for camino in caminos_ant:
-            ver_relevante = camino[-1]
-            if (ver_relevante == nodo_fin):
+        for camino in caminos_anteriores:
+            nodo_actual = camino[-1]
+            if (nodo_actual == nodo_fin):
                 return list(camino)
-            vecinos = encuentra_vecinos(grafo_lista, ver_relevante)
+            vecinos = encuentra_vecinos(grafo_lista, nodo_actual)
             for vecino in vecinos:
                 caminos.append(camino + vecino)
 
